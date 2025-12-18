@@ -19,7 +19,7 @@ CandleStickEntry::CandleStickEntry(
 
 std::string CandleStickEntry::getDate(dateRange dateRange)
 {
-    std::vector dates = CSVReader::tokenise(date, '/');
+    std::vector<std::string> dates = CSVReader::tokenise(date, '/');
     switch (dateRange)
     {
     case dateRange::YEARLY:
