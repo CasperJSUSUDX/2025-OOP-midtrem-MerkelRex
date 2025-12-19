@@ -11,7 +11,6 @@ bool AccountManager::login()
 {
     
     loadAccounts("accounts.csv");
-    std::hash<std::string> hasher;
     std::string uuid;
     std::string password;
     std::string mode;
@@ -25,16 +24,41 @@ bool AccountManager::login()
             std::cin >> uuid;
             if (findUsername(uuid))
             {
-                std::cout << "Password: " << std::flush;
-                std::cin >> password;
-                if (hasher(password) == cache[uuid].password_h)
+                int attempts = 0;
+                while (true)
                 {
-                    std::cout << "Login in successfully" << std::endl;
-                }
-                else
-                {
-                    std::cout << "Wrong password. Please try again." << std::endl;
-                    continue;
+                    std::cout << "Password: " << std::flush;
+                    std::cin >> password;
+                    if (hasher(password) == cache[uuid].password_h)
+                    {
+                        std::cout << "Login in successfully" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        if (attempts > 1)
+                        {
+                            std::string answer;
+                            std::cout << "Forget password?. (Type retry or reset)" << std::endl;
+                            std::cin >> answer;
+
+                            if (answer == "retry")
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                resetPassword(uuid);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            std::cout << "Wrong password. Please try again." << std::endl;
+                        }
+                        attempts++;
+                        continue;
+                    }
                 }
             }
             else
@@ -79,21 +103,57 @@ void AccountManager::createAccount()
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    std::hash<std::string> hasher;
     std::string username;
     std::string password;
     std::string email;
-    std::cout << "Please give a username." << std::endl;
-    std::cout << "Username: " << std::flush;
-    std::getline(std::cin, username);
+    std::cout << "Please type your full name." << std::endl;
+    while (true)
+    {
+        bool duplicates = false;
+        std::cout << "Full name: " << std::flush;
+        std::getline(std::cin, username);
+
+        for (auto& data: cache)
+        {
+            if (data.second.username == username)
+            {
+                std::cout << "This name is already have an account. Please use other name." <<std::endl;
+                duplicates = true;
+            }
+        }
+
+        if (!duplicates)
+        {
+            break;
+        }
+    }
 
     std::cout << "Please set a password." << std::endl;
     std::cout << "Password: " << std::flush;
     std::cin >> password;
 
     std::cout << "Please connect an email." << std::endl;
-    std::cout << "Email: " << std::flush;
-    std::cin >> email;
+    while (true)
+    {
+        bool duplicates = false;
+        std::cout << "Email: " << std::flush;
+        std::cin >> email;
+
+        for (auto& data: cache)
+        {
+            if (data.second.username == username)
+            {
+                std::cout << "This email is already been use. Please use other email." <<std::endl;
+                duplicates = true;
+            }
+        }
+
+        if (!duplicates)
+        {
+            break;
+        }
+    }
+
     UserInfo info = {username, hasher(password), email};
     std::string uuid = generateUUID(10);
     existUUID.insert(uuid);
@@ -105,7 +165,6 @@ void AccountManager::createAccount()
 void AccountManager::loadAccounts(std::string filename)
 {
     cache.clear();
-    std::hash<std::string> hasher;
     std::fstream accounts(filename);
     if (accounts.is_open())
     {
@@ -146,6 +205,47 @@ bool AccountManager::findUsername(std::string username)
     return cache.find(username) != cache.end();
 }
 
+bool AccountManager::resetPassword(std::string uuid)
+{
+    std::string OTP;
+    while (true)
+    {
+        // Generate OTP
+        OTP = "1234";
+        // send OTP to email
+        while (true)
+        {
+            std::string input;
+            std::cout << "OTP: " << std::flush;
+            std::cin >> input;
+
+            if (input == OTP)
+            {
+                std::string newPassword;
+                std::cout << "New Password: " << std::flush;
+                std::cin >> newPassword;
+                
+                cache[uuid].password_h = hasher(newPassword);
+                updateUserCSV();
+                return true;
+            }
+            else
+            {
+                std::string answer;
+                std::cout << "Wrong OTP. You want to try again or resent a new one. (Type retry or send)" << std::endl;
+                std::cin >> answer;
+
+                if (answer == "send")
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 std::string AccountManager::generateUUID(int length)
 {
     const std::string characters = "0123456789";
@@ -176,3 +276,4 @@ std::string AccountManager::generateUUID(int length)
 
 std::map<std::string, UserInfo> AccountManager::cache;
 std::set<std::string> AccountManager::existUUID;
+std::hash<std::string> AccountManager::hasher;

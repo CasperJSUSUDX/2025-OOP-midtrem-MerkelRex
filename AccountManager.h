@@ -21,7 +21,9 @@ class AccountManager
         static void loadAccounts(std::string filename);
         static void updateUserCSV();
         static bool findUsername(std::string username);
+        static bool resetPassword(std::string uuid);
         static std::string generateUUID(int length);
         static std::map<std::string, UserInfo> cache;
         static std::set<std::string> existUUID;
+        static std::hash<std::string> hasher;
 };
