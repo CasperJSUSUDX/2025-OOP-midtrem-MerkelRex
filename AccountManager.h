@@ -16,8 +16,8 @@ class AccountManager
     public:
         AccountManager();
         static bool login();
-        static void createAccount();
     private:
+        static bool createAccount();
         static void loadAccounts(std::string filename);
         static void updateUserCSV();
         static bool findUsername(std::string username);

@@ -3,6 +3,7 @@
 #include <vector>
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
+#include "AccountManager.h"
 
 MerkelMain::MerkelMain()
 {
@@ -13,6 +14,8 @@ void MerkelMain::init()
 {
     int input;
     currentTime = orderBook.getEarliestTime();
+
+    AccountManager::login();
 
     wallet.insertCurrency("BTC", 10);
 

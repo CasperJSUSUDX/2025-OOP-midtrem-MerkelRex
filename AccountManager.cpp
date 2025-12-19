@@ -32,6 +32,7 @@ bool AccountManager::login()
                     if (hasher(password) == cache[uuid].password_h)
                     {
                         std::cout << "Login in successfully" << std::endl;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         break;
                     }
                     else
@@ -81,7 +82,6 @@ bool AccountManager::login()
                 if (answer == "create")
                 {
                     createAccount();
-                    return false;
                 }
                 else
                 {
@@ -93,13 +93,15 @@ bool AccountManager::login()
         }
         else
         {
-            createAccount();
-            return false;
+            if (createAccount())
+            {
+                mode = "login";
+            }
         }
     }
 }
 
-void AccountManager::createAccount()
+bool AccountManager::createAccount()
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -160,6 +162,7 @@ void AccountManager::createAccount()
     cache[uuid] = info;
     updateUserCSV();
     std::cout << "Create successfully.\nYour UUID is " << uuid << std::endl;
+    return true;
 }
 
 void AccountManager::loadAccounts(std::string filename)
