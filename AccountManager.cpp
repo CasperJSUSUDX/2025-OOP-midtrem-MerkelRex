@@ -7,7 +7,7 @@
 
 AccountManager::AccountManager() {}
 
-bool AccountManager::login()
+Wallet AccountManager::login()
 {
     
     loadAccounts("accounts.csv");
@@ -32,8 +32,8 @@ bool AccountManager::login()
                     if (hasher(password) == cache[uuid].password_h)
                     {
                         std::cout << "Login in successfully" << std::endl;
+                        return getWallet(uuid);
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        break;
                     }
                     else
                     {
@@ -89,13 +89,15 @@ bool AccountManager::login()
                 }
             }
 
-            return true;
         }
         else
         {
             if (createAccount())
             {
                 mode = "login";
+            }
+            else
+            {
             }
         }
     }
@@ -161,6 +163,11 @@ bool AccountManager::createAccount()
     existUUID.insert(uuid);
     cache[uuid] = info;
     updateUserCSV();
+
+    Wallet wallet{""};
+    wallet.insertCurrency("BTC", 10);
+    wallet.insertCurrency("USDT", 100);
+    updateUserWalletCSV(uuid, wallet);
     std::cout << "Create successfully.\nYour UUID is " << uuid << std::endl;
     return true;
 }
@@ -186,21 +193,80 @@ void AccountManager::loadAccounts(std::string filename)
 
 void AccountManager::updateUserCSV()
 {
-    std::ofstream accounts("accounts.csv", std::ios::out | std::ios::trunc);
+    std::ofstream accounts("accounts.csv", std::ios::trunc);
     if (accounts.is_open())
-    {
-        for (auto& data: cache)
+    {       
+        for (std::pair<std::string, UserInfo> pair: cache)
         {
-            std::string uuid = data.first;
-            std::string username = data.second.username;
-            std::string password = std::to_string(data.second.password_h);
-            std::string email = data.second.email;
+            std::string uuid = pair.first;
+            std::string username = pair.second.username;
+            std::string password = std::to_string(pair.second.password_h);
+            std::string email = pair.second.email;
             std::string newLine = uuid + ',' + username + ',' + password + ',' + email + '\n';
             accounts << newLine;
         }
 
         accounts.close();
     }
+}
+
+void AccountManager::updateUserWalletCSV(std::string uuid, Wallet& wallet)
+{
+    std::ifstream readWalletTable("walletTable.csv");
+    std::map<std::string, std::string> table;
+    if (readWalletTable.is_open())
+    {
+        std::string line;
+        while(std::getline(readWalletTable, line))
+        {
+            std::vector<std::string> tokens = CSVReader::tokenise(line, ',');
+            table[tokens[0]] = tokens[1];
+        }
+        table[uuid] = wallet.storeInString();
+        readWalletTable.close();
+    }
+
+    std::ofstream writeWalletTable("walletTable.csv", std::ios::trunc);
+    if (writeWalletTable.is_open())
+    {
+        for (std::pair<std::string, std::string> pair: table)
+        {
+            std::string newLine = pair.first + ',';
+            if (pair.first == uuid)
+            {
+                newLine += wallet.storeInString();
+            }
+            else
+            {
+                newLine += pair.second + '\n';
+            }
+            writeWalletTable << newLine;
+        }
+        writeWalletTable.close();
+    }
+}
+
+Wallet AccountManager::getWallet(std::string uuid)
+{
+    std::ifstream table("walletTable.csv");
+    std::string walletSetting;
+    if (table.is_open())
+    {
+        std::string line;
+        while (std::getline(table, line))
+        {
+            std::vector<std::string> tokens = CSVReader::tokenise(line, ',');
+            if (tokens[0] == uuid)
+            {
+                walletSetting = tokens[1];
+                break;
+            }
+        }
+        
+        table.close();
+    }
+    Wallet wallet{walletSetting};
+    return wallet;
 }
 
 bool AccountManager::findUsername(std::string username)

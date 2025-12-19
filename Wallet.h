@@ -8,7 +8,7 @@
 class Wallet 
 {
     public:
-        Wallet();
+        Wallet(std::string walletString);
         /** insert currency to the wallet */
         void insertCurrency(std::string type, double amount);
         /** remove currency from the wallet */
@@ -28,6 +28,7 @@ class Wallet
         std::string toString();
         friend std::ostream& operator<<(std::ostream& os, Wallet& wallet);
 
+        std::string storeInString();
         
     private:
         std::map<std::string,double> currencies;

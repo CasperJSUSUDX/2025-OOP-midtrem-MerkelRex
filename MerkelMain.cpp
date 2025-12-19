@@ -17,8 +17,6 @@ void MerkelMain::init()
 
     AccountManager::login();
 
-    wallet.insertCurrency("BTC", 10);
-
     while(true)
     {
         printMenu();

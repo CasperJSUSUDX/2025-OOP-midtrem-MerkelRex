@@ -27,6 +27,6 @@ class MerkelMain
 
 //        OrderBook orderBook{"20200317.csv"};
 	OrderBook orderBook{"20200601.csv"};
-        Wallet wallet;
+        Wallet wallet{""};
 
 };

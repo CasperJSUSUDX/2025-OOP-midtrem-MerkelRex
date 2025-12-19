@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Wallet.h"
 #include <string>
 #include <map>
 #include <set>
@@ -15,11 +16,13 @@ class AccountManager
 {
     public:
         AccountManager();
-        static bool login();
+        static Wallet login();
     private:
         static bool createAccount();
         static void loadAccounts(std::string filename);
         static void updateUserCSV();
+        static void updateUserWalletCSV(std::string uuid, Wallet& wallet);
+        static Wallet getWallet(std::string uuid);
         static bool findUsername(std::string username);
         static bool resetPassword(std::string uuid);
         static std::string generateUUID(int length);
