@@ -13,7 +13,7 @@ CandleStickEntry::CandleStickEntry(
   open(_open),
   high(_high),
   low(_low),
-  close(close)
+  close(_close)
 {
 
 }
@@ -33,12 +33,12 @@ std::string CandleStickEntry::getDate(DateRange dateRange)
     switch (dateRange)
     {
     case DateRange::YEARLY:
-        return dates[0];
+        return date.substr(0, 4);
     case DateRange::MONTHLY:
-        return dates[0] + '/' + dates[1];
+        return date.substr(0, 7);
     case DateRange::DAILY:
-        return dates[0] + '/' + dates[1] + '/' + dates[2];
+        return date.substr(0, 10);
     default:
-        return dates[0];
+        return date.substr(0, 4);
     }
 }
