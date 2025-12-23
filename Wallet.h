@@ -34,8 +34,10 @@ class Wallet
         std::string storeInString();
         
     private:
+        void storeOperateInCache(std::string operate, std::string type, double amount);
+
         std::string uuid;
-        std::vector<std::string> operatesCache = {"operate one", "operate two"};
+        std::vector<std::string> operatesCache;
         std::map<std::string,double> currencies;
 
 };

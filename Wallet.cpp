@@ -33,6 +33,7 @@ void Wallet::insertCurrency(std::string type, double amount)
     }
     balance += amount; 
     currencies[type] = balance; 
+    storeOperateInCache("insert", type, amount);
 }
 
 bool Wallet::removeCurrency(std::string type, double amount)
@@ -51,6 +52,7 @@ bool Wallet::removeCurrency(std::string type, double amount)
         {
             //std::cout << "Removing " << type << ": " << amount << std::endl;
             currencies[type] -= amount;
+            storeOperateInCache("remove", type, amount);
             return true;
         } 
         else // they have it but not enough.
@@ -79,8 +81,9 @@ void Wallet::processSale(OrderBookEntry& sale)
         std::string incomingCurrency = currs[1];
 
         currencies[incomingCurrency] += incomingAmount;
+        storeOperateInCache("income", incomingCurrency, incomingAmount);
         currencies[outgoingCurrency] -= outgoingAmount;
-
+        storeOperateInCache("expenditure", outgoingCurrency, outgoingAmount);
     }
     // bid
     if (sale.orderType == OrderBookType::bidsale)
@@ -91,7 +94,9 @@ void Wallet::processSale(OrderBookEntry& sale)
         std::string outgoingCurrency = currs[1];
 
         currencies[incomingCurrency] += incomingAmount;
+        storeOperateInCache("income", incomingCurrency, incomingAmount);
         currencies[outgoingCurrency] -= outgoingAmount;
+        storeOperateInCache("expenditure", outgoingCurrency, outgoingAmount);
     }
 }
 
@@ -118,6 +123,13 @@ bool Wallet::canFulfillOrder(OrderBookEntry order)
 
 
     return false; 
+}
+
+void Wallet::storeOperateInCache(std::string operate, std::string type, double amount)
+{
+    std::string s;
+    s = operate + ',' + type + ',' + std::to_string(amount);
+    operatesCache.push_back(s);
 }
 
 void Wallet::logInCSV()
