@@ -32,11 +32,13 @@ class Wallet
         friend std::ostream& operator<<(std::ostream& os, Wallet& wallet);
         /** convert to a format that can store in CSV and read by the code */
         std::string storeInString();
+
+        void updateUserWalletCSV();
         
+        std::string uuid;
     private:
         void storeOperateInCache(std::string operate, std::string type, double amount);
 
-        std::string uuid;
         std::vector<std::string> operatesCache;
         std::map<std::string,double> currencies;
 

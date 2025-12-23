@@ -167,7 +167,7 @@ bool AccountManager::createAccount()
     Wallet wallet{uuid, ""};
     wallet.insertCurrency("BTC", 10);
     wallet.insertCurrency("USDT", 100);
-    updateUserWalletCSV(uuid, wallet);
+    wallet.updateUserWalletCSV();
     std::cout << "Create successfully.\nYour UUID is " << uuid << std::endl;
     return true;
 }
@@ -207,42 +207,6 @@ void AccountManager::updateUserCSV()
         }
 
         accounts.close();
-    }
-}
-
-void AccountManager::updateUserWalletCSV(std::string uuid, Wallet& wallet)
-{
-    std::ifstream readWalletTable("walletTable.csv");
-    std::map<std::string, std::string> table;
-    if (readWalletTable.is_open())
-    {
-        std::string line;
-        while(std::getline(readWalletTable, line))
-        {
-            std::vector<std::string> tokens = CSVReader::tokenise(line, ',');
-            table[tokens[0]] = tokens[1];
-        }
-        table[uuid] = wallet.storeInString();
-        readWalletTable.close();
-    }
-
-    std::ofstream writeWalletTable("walletTable.csv", std::ios::trunc);
-    if (writeWalletTable.is_open())
-    {
-        for (std::pair<std::string, std::string> pair: table)
-        {
-            std::string newLine = pair.first + ',';
-            if (pair.first == uuid)
-            {
-                newLine += wallet.storeInString();
-            }
-            else
-            {
-                newLine += pair.second + '\n';
-            }
-            writeWalletTable << newLine;
-        }
-        writeWalletTable.close();
     }
 }
 

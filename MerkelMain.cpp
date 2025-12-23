@@ -195,6 +195,7 @@ void MerkelMain::exitApp()
 {
     std::cout << "See you next time." << std::endl;
     wallet.logInCSV();
+    wallet.updateUserWalletCSV();
     exitFlag = true;
 }
 

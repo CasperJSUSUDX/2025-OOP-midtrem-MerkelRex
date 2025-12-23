@@ -21,7 +21,6 @@ class AccountManager
         static bool createAccount();
         static void loadAccounts(std::string filename);
         static void updateUserCSV();
-        static void updateUserWalletCSV(std::string uuid, Wallet& wallet);
         static Wallet getWallet(std::string uuid);
         static bool findUsername(std::string username);
         static bool resetPassword(std::string uuid);
