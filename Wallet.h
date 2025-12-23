@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
-#include <map>
 #include "OrderBookEntry.h"
 #include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+
 
 class Wallet 
 {
@@ -33,6 +35,7 @@ class Wallet
         
     private:
         std::string uuid;
+        std::vector<std::string> operatesCache = {"operate one", "operate two"};
         std::map<std::string,double> currencies;
 
 };

@@ -1,6 +1,7 @@
 #include "Wallet.h"
-#include <iostream>
 #include "CSVReader.h"
+#include <iostream>
+#include <fstream>
 
 Wallet::Wallet(std::string _uuid, std::string walletString)
 : uuid(_uuid)
@@ -121,7 +122,17 @@ bool Wallet::canFulfillOrder(OrderBookEntry order)
 
 void Wallet::logInCSV()
 {
-
+    std::string filename = uuid + ".csv";
+    std::ofstream writeFile(filename, std::ios::app);
+    if (writeFile.is_open())
+    {
+        
+        for (std::string operate: operatesCache)
+        {
+            writeFile << operate + '\n';
+        }
+        writeFile.close();
+    }
 }
 
 std::string Wallet::toString()

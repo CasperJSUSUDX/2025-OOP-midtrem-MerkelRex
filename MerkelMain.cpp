@@ -21,13 +21,12 @@ void MerkelMain::init()
         printMenu();
         input = getUserOption();
 
-        if (input == 7)
+        processUserOption(input);
+
+        if (exitFlag)
         {
-            std::cout << "See you next time." << std::endl;
             break;
         }
-
-        processUserOption(input);
     }
 }
 
@@ -191,12 +190,19 @@ void MerkelMain::gotoNextTimeframe()
 
     currentTime = orderBook.getNextTime(currentTime);
 }
- 
+
+void MerkelMain::exitApp()
+{
+    std::cout << "See you next time." << std::endl;
+    wallet.logInCSV();
+    exitFlag = true;
+}
+
 int MerkelMain::getUserOption()
 {
     int userOption = 0;
     std::string line;
-    std::cout << "Type in 1-6" << std::endl;
+    std::cout << "Type in 1-7" << std::endl;
     std::getline(std::cin, line);
     try{
         userOption = std::stoi(line);
@@ -210,32 +216,32 @@ int MerkelMain::getUserOption()
 
 void MerkelMain::processUserOption(int userOption)
 {
-    if (userOption == 0) // bad input
+    switch (userOption)
     {
-        std::cout << "Invalid choice. Choose 1-6" << std::endl;
-    }
-    if (userOption == 1) 
-    {
+    case 1:
         printHelp();
-    }
-    if (userOption == 2) 
-    {
+        break;
+    case 2:
         printMarketStats();
-    }
-    if (userOption == 3) 
-    {
+        break;
+    case 3:
         enterAsk();
-    }
-    if (userOption == 4) 
-    {
+        break;
+    case 4:
         enterBid();
-    }
-    if (userOption == 5) 
-    {
+        break;
+    case 5:
         printWallet();
-    }
-    if (userOption == 6) 
-    {
+        break;
+    case 6:
         gotoNextTimeframe();
+        break;
+    case 7:
+        exitApp();
+        break;
+    // bad input
+    default:
+        std::cout << "Invalid choice. Choose 1-7" << std::endl;
+        break;
     }
 }
