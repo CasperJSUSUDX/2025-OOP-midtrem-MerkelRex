@@ -9,7 +9,7 @@
 class MerkelMain
 {
     public:
-        MerkelMain();
+        MerkelMain(Wallet _wallet);
         /** Call this to start the sim */
         void init();
     private: 
@@ -27,6 +27,6 @@ class MerkelMain
 
 //        OrderBook orderBook{"20200317.csv"};
 	    OrderBook orderBook{"20200601.csv"};
-        Wallet wallet{""};
+        Wallet wallet;
 
 };

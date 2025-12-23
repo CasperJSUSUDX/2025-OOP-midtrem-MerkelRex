@@ -32,8 +32,8 @@ Wallet AccountManager::login()
                     if (hasher(password) == cache[uuid].password_h)
                     {
                         std::cout << "Login in successfully" << std::endl;
-                        return getWallet(uuid);
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        return getWallet(uuid);
                     }
                     else
                     {
@@ -164,7 +164,7 @@ bool AccountManager::createAccount()
     cache[uuid] = info;
     updateUserCSV();
 
-    Wallet wallet{""};
+    Wallet wallet{uuid, ""};
     wallet.insertCurrency("BTC", 10);
     wallet.insertCurrency("USDT", 100);
     updateUserWalletCSV(uuid, wallet);
@@ -265,7 +265,7 @@ Wallet AccountManager::getWallet(std::string uuid)
         
         table.close();
     }
-    Wallet wallet{walletSetting};
+    Wallet wallet{uuid, walletSetting};
     return wallet;
 }
 

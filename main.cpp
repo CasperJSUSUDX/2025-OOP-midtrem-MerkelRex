@@ -1,9 +1,10 @@
 #include "Wallet.h"
-#include <iostream>
 #include "MerkelMain.h"
+#include "AccountManager.h"
+#include <iostream>
 
 int main()
 {   
-    MerkelMain app{};
+    MerkelMain app{AccountManager::login()};
     app.init();
 }
