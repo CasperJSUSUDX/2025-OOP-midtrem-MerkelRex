@@ -100,6 +100,63 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
+std::vector<CandleStickEntry> OrderBook::summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type)
+{
+    auto convertToDateRange = [&](std::string& timeStamp) -> std::string {
+        switch (dateRange)
+        {
+            case DateRange::YEARLY:
+                return timeStamp.substr(0, 4);
+            case DateRange::MONTHLY:
+                return timeStamp.substr(0, 7);
+            case DateRange::DAILY:
+                return timeStamp.substr(0, 10);
+            default:
+                return timeStamp.substr(0, 4);
+        }
+    };
+
+    std::vector<CandleStickEntry> candleSticks;
+    std::vector<OrderBookEntry> orders_sub;
+    std::string lastTimeStamp = convertToDateRange(orders[0].timestamp);
+    for (OrderBookEntry& obe: orders)
+    {
+        if (convertToDateRange(obe.timestamp) == lastTimeStamp)
+        {
+            if (obe.product == product && obe.orderType == type)
+            {
+                orders_sub.push_back(obe);
+            }
+        }
+        else
+        {
+            CandleStickEntry cse{
+                lastTimeStamp,
+                orders_sub[0].price,
+                getHighPrice(orders_sub),
+                getLowPrice(orders_sub),
+                orders_sub.back().price
+            };
+            candleSticks.push_back(cse);
+            orders_sub.clear();
+        }
+        lastTimeStamp = convertToDateRange(obe.timestamp);
+    }
+
+    if (orders_sub.size() > 0)
+    {
+        CandleStickEntry cse{
+                lastTimeStamp,
+                orders_sub[0].price,
+                getHighPrice(orders_sub),
+                getLowPrice(orders_sub),
+                orders_sub.back().price
+            };
+        candleSticks.push_back(cse);
+    }
+    return candleSticks;
+}
+
 std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std::string timestamp)
 {
 // asks = orderbook.asks
