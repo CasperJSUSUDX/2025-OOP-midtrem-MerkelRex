@@ -9,7 +9,7 @@ CandleStickEntry::CandleStickEntry(
     double _high,
     double _low,
     double _close)
-: date(CSVReader::tokenise(_date, ' ')[0]),
+: date(_date),
   open(_open),
   high(_high),
   low(_low),
@@ -20,11 +20,12 @@ CandleStickEntry::CandleStickEntry(
 
 void CandleStickEntry::print()
 {
-    std::cout << "Date: " << date << std::endl;
+    std::cout << "Current time: " << date << std::endl;
     std::cout << "Open: " << open << std::endl;
     std::cout << "High: " << high << std::endl;
     std::cout << "Low: " << low << std::endl;
     std::cout << "Close: " << close << std::endl;
+    std::cout << "===================" << std::endl;
 }
 
 std::string CandleStickEntry::getDate(DateRange dateRange)

@@ -15,6 +15,11 @@ void MerkelMain::init()
 {
     int input;
     currentTime = orderBook.getEarliestTime();
+    std::vector<CandleStickEntry> candleSticks = orderBook.summaryCandleStick(DateRange::YEARLY, "ETH/BTC", OrderBookType::ask, 30);
+    for (CandleStickEntry& cse: candleSticks)
+    {
+        cse.print();
+    }
 
     while(true)
     {

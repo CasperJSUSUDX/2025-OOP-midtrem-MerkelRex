@@ -33,7 +33,7 @@ class OrderBook
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
 
-        std::vector<CandleStickEntry> summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type);
+        std::vector<CandleStickEntry> summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type, unsigned int interval);
 
         /** calculate the interval seconds between two time stamp */
         static unsigned int calcTimeInterval(std::string& timeStamp1, std::string& timeStamp2);

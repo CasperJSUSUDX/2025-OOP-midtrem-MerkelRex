@@ -100,28 +100,28 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-std::vector<CandleStickEntry> OrderBook::summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type)
+std::vector<CandleStickEntry> OrderBook::summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type, unsigned int interval)
 {
     auto convertToDateRange = [&](std::string& timeStamp) -> std::string {
         switch (dateRange)
         {
             case DateRange::YEARLY:
-                return timeStamp.substr(11, 14);
+                return timeStamp.substr(11, 4);
             case DateRange::MONTHLY:
-                return timeStamp.substr(11, 16);
+                return timeStamp.substr(11, 7);
             case DateRange::DAILY:
-                return timeStamp.substr(11, 18);
+                return timeStamp.substr(11, 10);
             default:
-                return timeStamp.substr(11, 18);
+                return timeStamp.substr(11, 4);
         }
     };
 
     std::vector<CandleStickEntry> candleSticks;
     std::vector<OrderBookEntry> orders_sub;
-    std::string lastTimeStamp = convertToDateRange(orders[0].timestamp);
+    std::string lastTimeStamp = orders[0].timestamp;
     for (OrderBookEntry& obe: orders)
     {
-        if (convertToDateRange(obe.timestamp) == lastTimeStamp)
+        if (OrderBook::calcTimeInterval(obe.timestamp, lastTimeStamp) <= interval)
         {
             if (obe.product == product && obe.orderType == type)
             {
@@ -140,7 +140,7 @@ std::vector<CandleStickEntry> OrderBook::summaryCandleStick(DateRange dateRange,
             candleSticks.push_back(cse);
             orders_sub.clear();
         }
-        lastTimeStamp = convertToDateRange(obe.timestamp);
+        lastTimeStamp = obe.timestamp;
     }
 
     if (orders_sub.size() > 0)
