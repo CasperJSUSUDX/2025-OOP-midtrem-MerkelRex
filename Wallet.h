@@ -33,6 +33,9 @@ class Wallet
         /** convert to a format that can store in CSV and read by the code */
         std::string storeInString();
 
+        /** pass a trading history to simulate the user's trading */
+        static std::vector<std::string> simulateUserTrade(unsigned int simulateTimes, std::vector<std::string> tradingHistory);
+
         void updateUserWalletCSV();
         
         std::string uuid;

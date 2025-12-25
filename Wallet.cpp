@@ -2,6 +2,8 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <random>
 
 Wallet::Wallet(std::string _uuid, std::string walletString)
 : uuid(_uuid)
@@ -81,9 +83,9 @@ void Wallet::processSale(OrderBookEntry& sale)
         std::string incomingCurrency = currs[1];
 
         currencies[incomingCurrency] += incomingAmount;
-        storeOperateInCache("income", incomingCurrency, incomingAmount);
+        storeOperateInCache("ask", incomingCurrency, incomingAmount);
         currencies[outgoingCurrency] -= outgoingAmount;
-        storeOperateInCache("expenditure", outgoingCurrency, outgoingAmount);
+        storeOperateInCache("ask-sale", outgoingCurrency, outgoingAmount);
     }
     // bid
     if (sale.orderType == OrderBookType::bidsale)
@@ -94,9 +96,9 @@ void Wallet::processSale(OrderBookEntry& sale)
         std::string outgoingCurrency = currs[1];
 
         currencies[incomingCurrency] += incomingAmount;
-        storeOperateInCache("income", incomingCurrency, incomingAmount);
+        storeOperateInCache("bid", incomingCurrency, incomingAmount);
         currencies[outgoingCurrency] -= outgoingAmount;
-        storeOperateInCache("expenditure", outgoingCurrency, outgoingAmount);
+        storeOperateInCache("bid-sale", outgoingCurrency, outgoingAmount);
     }
 }
 
@@ -181,6 +183,105 @@ void Wallet::updateUserWalletCSV()
         }
         writeWalletTable.close();
     }
+}
+
+std::vector<std::string> Wallet::simulateUserTrade(unsigned int simulateTimes, std::vector<std::string> tradingHistory)
+{
+    // possiable improve: do the second part during converting
+    // convert the trading history into a table
+    std::vector<std::string> operates;
+    std::map<std::string, double> table;
+    for (std::string& line: tradingHistory)
+    {
+        std::vector<std::string> tokens = CSVReader::tokenise(line, ',');
+        std::string operate = tokens[0];
+        std::string currency = tokens[1];
+        double amount = std::stod(tokens[2]);
+        double currentAmount = table[currency];
+        if (operate == "bid" || "ask-sale")
+        {
+            table[currency] = currentAmount - amount;
+        }
+        else if (operate == "ask" || "bid-sale")
+        {
+            table[currency] = currentAmount + amount;
+        }
+    }
+
+    // separte currencies to two part
+    // positive is want to get
+    // negative is want to sale
+    std::vector<std::string> positve;
+    std::vector<std::string> negative;
+    double mean = 0;
+    for (std::pair<std::string, double> pair: table)
+    {
+        mean += pair.second;
+        if (pair.second > 0)
+        {
+            positve.push_back(pair.first);
+        }
+        else
+        {
+            negative.push_back(pair.first);
+        }
+    }
+    mean /= table.size();
+
+    // process if there are not negative then separte by the mean of all currencies
+    if (negative.size() == 0)
+    {
+        for (std::string currency: positve)
+        {
+            if (table[currency] < mean)
+            {
+                negative.push_back(currency);
+                positve.erase(std::remove(positve.begin(), positve.end(), currency), positve.end());
+            }
+        }
+    }
+
+    // calculate the percentage of each currency
+    // std::map<std::string, double> askRate;
+    // std::map<std::string, double> bidRate;
+    // double sum = 0;
+    // for (std::string& currency: positve)
+    // {
+    //     sum += table[currency];
+    // }
+    // for (std::string& currency: positve)
+    // {
+    //     askRate[currency] = table[currency] / sum;
+    // }
+
+    // sum = 0;
+    // for (std::string& currency: positve)
+    // {
+    //     sum += table[currency];
+    // }
+    // for (std::string& currency: positve)
+    // {
+    //     bidRate[currency] = table[currency] / sum;
+    // }
+
+    // random pick
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::vector<double> askAmount;
+    for (std::string& currency: positve)
+    {
+       askAmount.push_back(table[currency]);
+    }
+    std::discrete_distribution<> dist(askAmount.begin(), askAmount.end());
+    for (unsigned int i = 0; i < simulateTimes; ++i)
+    {
+        unsigned int index = dist(gen);
+        std::string currency = positve[index];
+        // TODO: Adjust amount of a random ask
+        std::string amount = std::to_string(table[currency]);
+        operates.push_back("ask" + ',' + currency + ',' + amount);
+    }
+    return operates;
 }
 
 std::string Wallet::toString()
