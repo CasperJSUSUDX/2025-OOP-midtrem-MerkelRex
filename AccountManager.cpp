@@ -90,15 +90,17 @@ Wallet AccountManager::login()
             }
 
         }
-        else
+        else if (mode == "create")
         {
             if (createAccount())
             {
                 mode = "login";
             }
-            else
-            {
-            }
+        }
+        else
+        {
+            std::cout << "Unknow input. Please Try again. (Type login or create)" << std::endl;
+            std::cin >> mode;
         }
     }
 }
