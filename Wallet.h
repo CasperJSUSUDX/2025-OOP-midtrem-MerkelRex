@@ -33,6 +33,11 @@ class Wallet
         /** convert to a format that can store in CSV and read by the code */
         std::string storeInString();
 
+        /** this funciton will read the history csv and display a specific pieces by the arugment */
+        void showTansitionOrTradingHistory(unsigned int pieces);
+        /** this function will read the history csv and statistic all of the activity */
+        void statisticsUserActivity();
+
         /** pass a trading history to analyze and call simulateUserTrade() to simulate */
         static std::vector<std::string> analyzeAndSimulateUserTrade(unsigned int simulateTimes, std::vector<std::string> tradingHistory);
 

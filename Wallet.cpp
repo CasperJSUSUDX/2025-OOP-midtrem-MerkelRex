@@ -184,6 +184,65 @@ void Wallet::updateUserWalletCSV()
     }
 }
 
+void Wallet::showTansitionOrTradingHistory(unsigned int pieces)
+{
+    std::ifstream readFile(uuid + ".csv");
+    if (readFile.is_open())
+    {
+        std::vector<std::string> lines;
+        std::string line;
+        while (std::getline(readFile, line))
+        {
+            lines.push_back(line);
+        }
+        
+        // set the start index at 0 if there are not enough pieces
+        unsigned int startIndex = lines.size() - 1 - pieces;
+        if (startIndex < 0) startIndex = 0;
+        for (unsigned int i = startIndex; i < lines.size(); ++i)
+        {
+            std::vector<std::string> tokens = CSVReader::tokenise(lines[i], ',');
+            line = "You " + tokens[0] + " a total of " + tokens[2] + " " + tokens[1];
+            std::cout << line << std::endl;
+        }
+
+        readFile.close();
+    }
+}
+
+void Wallet::statisticsUserActivity()
+{
+    std::ifstream readFile(uuid + ".csv");
+    if (readFile.is_open())
+    {
+        // statistic the history
+        std::map<std::string, double> statisticMap;
+        std::string line;
+        while (std::getline(readFile, line))
+        {
+            std::vector<std::string> tokens = CSVReader::tokenise(line, ',');
+
+            if (tokens[0] == "bid-sale" || tokens[0] == "ask-sale") continue;
+
+            std::string operate = tokens[0];
+            std::string product = tokens[1];
+            double amount = std::stod(tokens[2]);
+            double overallAmount = statisticMap[operate];
+            double productAmount = statisticMap[product];
+            statisticMap[operate] = overallAmount + amount;
+            statisticMap[product] = productAmount + amount;
+        }
+
+        // print out the statistic
+        for (std::pair<std::string, double> pair: statisticMap)
+        {
+            std::cout << pair.first << ": " << std::to_string(pair.second) << std::endl;
+        }
+        
+        readFile.close();
+    }
+}
+
 std::vector<std::string> Wallet::analyzeAndSimulateUserTrade(unsigned int simulateTimes, std::vector<std::string> tradingHistory)
 {
     // possiable improve: do the second part during converting
