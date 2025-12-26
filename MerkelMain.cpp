@@ -31,7 +31,6 @@ void MerkelMain::init()
     }
 }
 
-
 void MerkelMain::printMenu()
 {
     // 1 print help
