@@ -196,19 +196,21 @@ void Wallet::showTansitionOrTradingHistory(unsigned int pieces)
         }
         
         // set the start index at 0 if there are not enough pieces
-        unsigned int startIndex = lines.size() - 1 - pieces;
-        if (startIndex < 0) startIndex = 0;
+        unsigned int startIndex;
+        if (lines.size() < pieces + 1) startIndex = 0;
+        else startIndex = lines.size() - 1 - pieces;
+
         for (unsigned int i = startIndex; i < lines.size(); ++i)
         {
             std::vector<std::string> tokens = CSVReader::tokenise(lines[i], ',');
             std::string action = tokens[0];
-            if (action == "incsert" || action == "remove")
+            if (action == "insert" || action == "remove")
             {
                 line = "You inserted " + tokens[2] + " " + tokens[1] + ".";
             }
             if (action == "trade")
             {
-                line = "You sold " + tokens[2] + " " + tokens[1] + " to get " + tokens[4] + tokens[3] + ".";
+                line = "You sold " + tokens[2] + " " + tokens[1] + " to get " + tokens[4] + " " + tokens[3] + ".";
             }
             std::cout << line << std::endl;
         }
