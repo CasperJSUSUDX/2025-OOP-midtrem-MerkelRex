@@ -405,13 +405,13 @@ std::string Wallet::toString()
     {
         std::string currency = pair.first;
         double amount = pair.second;
-        s += currency + " : " + std::to_string(amount);
+        s += currency + " : " + std::to_string(amount) + "\n";
     }
     return s;
 }
 std::ostream& operator<<(std::ostream& os,  Wallet& wallet)
 {
-    os << wallet.toString() + "\n";
+    os << wallet.toString();
     return os;
 }
 
