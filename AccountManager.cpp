@@ -31,7 +31,7 @@ Wallet AccountManager::login()
                     std::cin >> password;
                     if (hasher(password) == cache[uuid].password_h)
                     {
-                        std::cout << "Login in successfully" << std::endl;
+                        std::cout << "Login in successfully\n" << std::endl;
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         return getWallet(uuid);
                     }
