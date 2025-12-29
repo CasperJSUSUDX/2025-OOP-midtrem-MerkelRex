@@ -38,27 +38,10 @@ class Wallet
         /** this function will read the history csv and statistic all of the activity */
         void statisticsUserActivity();
 
-        /** pass a trading history to analyze and call simulateUserTrade() to simulate */
-        static std::vector<std::string> analyzeAndSimulateUserTrade(unsigned int simulateTimes, std::vector<std::string> tradingHistory);
-
         void updateUserWalletCSV();
         
         std::string uuid;
     private:
-        struct CurrencyHistory
-        {
-            double total;
-            std::vector<double> historyAmounts;
-        };
-        /** simulate a user tarde activity and return by a string */
-        static std::string simulateUserTrade(
-            std::string operate,
-            std::map<std::string, CurrencyHistory>& currenciesTable,
-            std::vector<std::string>& currencies,
-            std::vector<double>& amounts,
-            std::mt19937& gen
-        );
-
         // there are two format of the operate
         // if only have input or output: {action},{currency},{amount}
         // if have both input and output: {action},{outgoingCurrency},{outgoingAmount},{incomingCurrency},{incomingAmount}
