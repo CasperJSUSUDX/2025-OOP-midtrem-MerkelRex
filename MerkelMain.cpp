@@ -298,6 +298,20 @@ void MerkelMain::printCandleStick()
         candleStickType
     );
 
+    std::string typeString;
+    switch (candleStickType)
+    {
+        case OrderBookType::ask:
+            typeString = "Ask";
+            break;
+        case OrderBookType::bid:
+            typeString = "Bid";
+            break;
+        default:
+            typeString = "Unknow";
+            break;
+    }
+    std::cout << "Product: " << candleStickProduct + ", Order type: " << typeString << std::endl;
     std::cout << "==============" << std::endl;
 
     // generate a candleStick vector by orderbook
