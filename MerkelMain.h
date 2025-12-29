@@ -19,7 +19,7 @@ class MerkelMain
         void printMarketStats();
         void enterAsk();
         void enterBid();
-        void simulateUserTrade();
+        void simulateTrade();
         void jumpToWallet();
         void jumpToCandleStick();
         void gotoNextTimeframe();
@@ -51,6 +51,7 @@ class MerkelMain
 
         std::string currentTime;
         bool exitFlag = false;
+        unsigned int simulateTimes = 5;
 
         // menu variables
         unsigned int indexOfMenus = 0;
@@ -62,7 +63,7 @@ class MerkelMain
                 {"Print exchange stats", printMarketStats},
                 {"Make an offer", enterAsk},
                 {"Make a bid", enterBid},
-                {"Simulate user trading", simulateUserTrade},
+                {"Simulate trades", simulateTrade},
                 {"Check wallet", jumpToWallet},
                 {"Show candle stick", jumpToCandleStick},
                 {"Continue", gotoNextTimeframe},

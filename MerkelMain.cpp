@@ -5,6 +5,7 @@
 #include "CandleStick.h"
 #include <ctime>
 #include <iostream>
+#include <random>
 #include <vector>
 
 MerkelMain::MerkelMain(Wallet _wallet)
@@ -137,9 +138,105 @@ void MerkelMain::enterBid()
         }   
     }
 }
-void MerkelMain::simulateUserTrade()
+void MerkelMain::simulateTrade()
 {
+    std::cout << "Simulating trade..." << std::endl;
+    std::string systemTimestamp = getCurrentSystemTimestamp();
+    std::vector<std::string> products = orderBook.getKnownProducts();
 
+    // Add randomness
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> fluctuation(-0.05, 0.05);
+
+    struct amountRange
+    {
+        double min = 0.001;
+        double max = 0.001;
+    };
+    
+
+    for (std::string& p: products)
+    {
+        std::vector<OrderBookEntry> askHistory = orderBook.getOrders(OrderBookType::ask, p, currentTime);
+        std::vector<OrderBookEntry> bidHistory = orderBook.getOrders(OrderBookType::bid, p, currentTime);
+        amountRange askRange;
+        amountRange bidRange;
+
+        // get an avarage price as the base price and the range of amount
+        double askPrice = 10;
+        if (!askHistory.empty())
+        {
+            double askSum = 0;
+            askRange.max = askHistory[0].amount;
+            askRange.min = askHistory[0].amount;
+
+            for (OrderBookEntry& obe: askHistory)
+            {
+                if (obe.amount > askRange.max) askRange.max = obe.amount;
+                if (obe.amount < askRange.min) askRange.min = obe.amount;
+
+                askSum += obe.price;
+            }
+            askPrice = askSum / askHistory.size();
+        }
+        double bidPrice = 10;
+        if (!bidHistory.empty())
+        {
+            double bidSum = 0;
+            bidRange.max = bidHistory[0].amount;
+            bidRange.min = bidHistory[0].amount;
+
+            for (OrderBookEntry& obe: bidHistory)
+            {
+                if (obe.amount > bidRange.max) bidRange.max = obe.amount;
+                if (obe.amount < bidRange.min) bidRange.min = obe.amount;
+
+                bidSum += obe.price;
+            }
+            bidPrice = bidSum / bidHistory.size();
+        }
+
+        // simulate n number of ask
+        for (unsigned int i = 0; i < simulateTimes; ++i)
+        {
+            double price = askPrice * (1 + fluctuation(gen));
+
+            std::uniform_real_distribution<> randomAmount(askRange.min, askRange.max);
+            double amount = randomAmount(gen);
+
+            OrderBookEntry obe {
+                price,
+                amount,
+                systemTimestamp,
+                p,
+                OrderBookType::ask
+            };
+
+            orderBook.appendOrder(obe);
+        }
+
+        // simulate n number of bid
+        for (unsigned int i = 0; i < simulateTimes; ++i)
+        {
+            double price = bidPrice * (1 + fluctuation(gen));
+
+            std::uniform_real_distribution<> randomAmount(bidRange.min, bidRange.max);
+            double amount = randomAmount(gen);
+
+            OrderBookEntry obe {
+                price,
+                amount,
+                systemTimestamp,
+                p,
+                OrderBookType::bid
+            };
+
+            orderBook.appendOrder(obe);
+        }
+    }
+    orderBook.sortOrder();
+    std::cout << "Simulate successfully." << std::endl;
 }
 void MerkelMain::jumpToWallet()
 {
@@ -515,7 +612,6 @@ std::string MerkelMain::getCurrentSystemTimestamp()
     if (sec.length() < 2) sec = "0" + sec;
 
     timestamp += hour + ':' + min + ':' + sec;
-    std::cout << timestamp << std::endl;
 
     return timestamp;
 }
