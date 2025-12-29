@@ -325,8 +325,8 @@ void MerkelMain::switchCandleStickProduct()
     std::cin >> product;
 
     candleStickProduct = product;
-    std::cout << "Change successfully. Current product is: " << product << std::endl;
-    
+    std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
+    printCandleStick();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 void MerkelMain::switchCandleStickType()
