@@ -51,6 +51,7 @@ class MerkelMain
                 {"Make an offer", enterAsk},
                 {"Make a bid", enterBid},
                 {"Check wallet", jumpToWallet},
+                {"Show candle stick", jumpToCandleStick},
                 {"Continue", gotoNextTimeframe},
                 {"Exit", exitApp}
             },
