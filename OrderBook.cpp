@@ -100,7 +100,12 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-std::vector<candleStickEntry> OrderBook::generateCnadleSticks(std::string startTimestamp, std::string endTimestamp, unsigned int timeInterval)
+std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
+    std::string startTimestamp,
+    std::string endTimestamp,
+    unsigned int timeInterval,
+    OrderBookType candleStickType
+)
 {
     std::vector<candleStickEntry> candleSticks;
     std::vector<OrderBookEntry> orders_sub;
@@ -127,7 +132,7 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(std::string startT
             nextTimestamp = OrderBookEntry::calcNextTimestamp(startTimestamp, timeInterval);
         }
 
-        if (timestamp == startTimestamp)
+        if (timestamp == startTimestamp && obe.orderType == candleStickType)
         {
             orders_sub.push_back(obe);
         }

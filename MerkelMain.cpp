@@ -234,13 +234,43 @@ void MerkelMain::printCandleStick()
     std::vector<candleStickEntry> candleSticks = orderBook.generateCnadleSticks(
         candleStickStartTimestamp,
         currentTime.substr(0, 19),
-        candleStickInterval
+        candleStickInterval,
+        candleStickType
     );
 
     std::cout << "==============" << std::endl;
 
     // generate a candleStick vector by orderbook
     CandleStick::printCandleStick(candleSticks);
+}
+void MerkelMain::switchCandleStickType()
+{
+    std::string type;
+    OrderBookType obType;
+    std::cout << "Input a order type to set type of the candle stick. (ask or bid)" << std::endl;
+    while (true)
+    {
+        std::cin >> type;
+        
+
+        if (type == "ask")
+        {
+            obType = OrderBookType::ask;
+            break;
+        }
+        if (type == "bid")
+        {
+            obType = OrderBookType::bid;
+            break;
+        }
+
+        std::cout << "Bad input. Please try again. (Format: YYYY/MM/DD HH:MM:SS)" << std::endl;
+    }
+
+    candleStickType = obType;
+    std::cout << "Change successfuly. Current type is: " << type << "\n" << std::endl;
+    printCandleStick();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 void MerkelMain::switchCandleStickStartTimestamp()
 {
@@ -279,6 +309,7 @@ void MerkelMain::switchCandleStickStartTimestamp()
     candleStickStartTimestamp = timestamp;
     std::cout << "Change successfuly. Current start timestamp is: " << timestamp << "\n" << std::endl;
     printCandleStick();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 void MerkelMain::switchCandleStickInterval()
 {
@@ -305,6 +336,7 @@ void MerkelMain::switchCandleStickInterval()
     candleStickInterval = num - (num % 5);
     std::cout << "Change successfuly. Current interval is: " << candleStickInterval << "\n" << std::endl;
     printCandleStick();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 void MerkelMain::exitDrawingPage()
 {

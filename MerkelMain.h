@@ -31,8 +31,10 @@ class MerkelMain
         void exitWalletPage();
         // drawing menu functions
         std::string candleStickStartTimestamp;
+        OrderBookType candleStickType = OrderBookType::ask;
         unsigned int candleStickInterval = 5;
         void printCandleStick();
+        void switchCandleStickType();
         void switchCandleStickStartTimestamp();
         void switchCandleStickInterval();
         void exitDrawingPage();
@@ -67,6 +69,7 @@ class MerkelMain
             },
             // drawing menu
             {
+                {"Switch candle stick type", switchCandleStickType},
                 {"Switch candle stick start timestamp", switchCandleStickStartTimestamp},
                 {"Switch candle stick interval", switchCandleStickInterval},
                 {"Exit", exitDrawingPage}
