@@ -189,6 +189,7 @@ void MerkelMain::dopsiteToWallet()
     std::string amountString;
     double amount;
     std::cout << "Deposite currency" << std::endl;
+    
     while (true)
     {
         std::cout << "Currency: " << std::flush;
@@ -199,8 +200,14 @@ void MerkelMain::dopsiteToWallet()
 
         try
         {
+            bool find = false;
+            std::vector<std::string> existProducts = orderBook.getKnownProducts();
+            for (std::string p: existProducts)
+            {
+                if (p == currency) find = true;
+            }
             amount = std::stod(amountString);
-            break;
+            if (find) break;
         }
         catch(std::exception& e)
         {
@@ -229,8 +236,14 @@ void MerkelMain::withdrawFromWallet()
 
         try
         {
+            bool find = false;
+            std::vector<std::string> existProducts = orderBook.getKnownProducts();
+            for (std::string p: existProducts)
+            {
+                if (p == currency) find = true;
+            }
             amount = std::stod(amountString);
-            break;
+            if (find) break;
         }
         catch(std::exception& e)
         {
@@ -330,8 +343,17 @@ void MerkelMain::switchCandleStickProduct()
     std::cout << "Product: ";
     std::cin >> product;
 
-    candleStickProduct = product;
-    std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
+    std::vector<std::string> existProducts = orderBook.getKnownProducts();
+    for (std::string p: existProducts)
+    {
+        if (p == product) 
+        {
+            candleStickProduct = product;
+            std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
+            break;
+        }
+    }
+
     printCandleStick();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
