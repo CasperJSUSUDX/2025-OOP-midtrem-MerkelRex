@@ -105,7 +105,7 @@ void OrderBook::appendOrder(OrderBookEntry& order)
 {
     orders.push_back(order);
 }
-void OrderBook::sortOrder(OrderBookEntry& order)
+void OrderBook::sortOrder()
 {
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }

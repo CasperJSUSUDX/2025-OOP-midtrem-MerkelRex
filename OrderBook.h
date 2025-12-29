@@ -30,7 +30,7 @@ class OrderBook
         void insertOrder(OrderBookEntry& order);
 
         void appendOrder(OrderBookEntry& order);
-        void sortOrder(OrderBookEntry& order);
+        void sortOrder();
 
         std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
 
