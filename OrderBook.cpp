@@ -1,9 +1,10 @@
 #include "OrderBook.h"
 #include "CSVReader.h"
-#include <map>
 #include <algorithm>
 #include <iostream>
 #include <cmath>
+#include <fstream>
+#include <map>
 
 /** construct, reading a csv data file */
 OrderBook::OrderBook(std::string filename)

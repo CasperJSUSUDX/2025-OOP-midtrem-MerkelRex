@@ -3,6 +3,7 @@
 #include "OrderBookEntry.h"
 #include "CandleStick.h"
 #include "CSVReader.h"
+#include <random>
 #include <string>
 #include <vector>
 
