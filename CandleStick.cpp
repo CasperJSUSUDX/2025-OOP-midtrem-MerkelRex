@@ -9,6 +9,8 @@ CandleStick::CandleStick()
 
 void CandleStick::printCandleStick(std::vector<candleStickEntry> candleSticks)
 {   
+    if (candleSticks.empty()) return;
+
     for (candleStickEntry& cse: candleSticks)
     {
         std::cout << cse.startTimestamp << " --> " << cse.endTimestamp << "\n" << std::endl;
