@@ -340,22 +340,26 @@ void MerkelMain::switchCandleStickProduct()
 {
     std::string product;
     std::cout << "Enter product. (ETH/BTC)" << std::endl;
-    std::cout << "Product: ";
-    std::cin >> product;
-
-    std::vector<std::string> existProducts = orderBook.getKnownProducts();
-    for (std::string p: existProducts)
+    while (true)
     {
-        if (p == product) 
-        {
-            candleStickProduct = product;
-            std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
-            break;
-        }
-    }
+        std::cout << "Product: ";
+        std::cin >> product;
 
-    printCandleStick();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::vector<std::string> existProducts = orderBook.getKnownProducts();
+        for (std::string p: existProducts)
+        {
+            if (p == product) 
+            {
+                candleStickProduct = product;
+                std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
+                printCandleStick();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return;
+            }
+        }
+
+        std::cout << "Bad input. Please try again." << std::endl;
+    }
 }
 void MerkelMain::switchCandleStickType()
 {
