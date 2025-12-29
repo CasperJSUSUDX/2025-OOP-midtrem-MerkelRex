@@ -29,6 +29,9 @@ class OrderBook
 
         void insertOrder(OrderBookEntry& order);
 
+        void appendOrder(OrderBookEntry& order);
+        void sortOrder(OrderBookEntry& order);
+
         std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
 
         static double getHighPrice(std::vector<OrderBookEntry>& orders);

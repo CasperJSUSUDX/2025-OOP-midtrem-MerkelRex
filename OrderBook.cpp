@@ -101,6 +101,15 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
+void OrderBook::appendOrder(OrderBookEntry& order)
+{
+    orders.push_back(order);
+}
+void OrderBook::sortOrder(OrderBookEntry& order)
+{
+    std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
+}
+
 std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
     std::string startTimestamp,
     std::string endTimestamp,
