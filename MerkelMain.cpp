@@ -2,6 +2,7 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 #include "AccountManager.h"
+#include "CandleStick.h"
 #include <iostream>
 #include <vector>
 
@@ -140,7 +141,7 @@ void MerkelMain::jumpToWallet()
 }
 void MerkelMain::jumpToCandleStick()
 {
-    std::cout << "Switch to candle stick page." << std::endl;
+    std::cout << "Switch to candle stick page.\n" << std::endl;
     printCandleStick();
     indexOfMenus = 2;
 }
@@ -225,10 +226,39 @@ void MerkelMain::exitWalletPage()
     indexOfMenus = 0;
 }
 
-// drawing menu
+// Candle stick menu
 void MerkelMain::printCandleStick()
 {
-    orderBook.summaryCandleStick(DateRange::YEARLY, "ETC/BTC", OrderBookType::ask, candleStickInterval);
+    // orderBook.summaryCandleStick(DateRange::YEARLY, "ETC/BTC", OrderBookType::ask, candleStickInterval);
+    // candleStickEntry a {
+    //     "2025",
+    //     "2026",
+    //     100,
+    //     150,
+    //     50,
+    //     120
+    // };
+    // candleStickEntry b {
+    //     "2026",
+    //     "2027",
+    //     100,
+    //     150,
+    //     50,
+    //     80
+    // };
+
+    // std::vector<candleStickEntry> candleSticks = { a, b };
+    std::vector<candleStickEntry> candleSticks = orderBook.generateCnadleSticks(
+        "2020/06/01 11:57:30",
+        "2020/06/01 11:57:40",
+        candleStickInterval
+    );
+
+    std::cout << "==============" << std::endl;
+
+    // generate a candleStick vector by orderbook
+    CandleStick::printCandleStick(candleSticks);
+    
 }
 void MerkelMain::switchCandleStickInterval()
 {

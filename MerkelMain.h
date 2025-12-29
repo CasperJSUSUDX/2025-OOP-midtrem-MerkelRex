@@ -30,7 +30,7 @@ class MerkelMain
         void updateUserCSV();
         void exitWalletPage();
         // drawing menu functions
-        unsigned int candleStickInterval = 15;
+        unsigned int candleStickInterval = 5;
         void printCandleStick();
         void switchCandleStickInterval();
         void exitDrawingPage();

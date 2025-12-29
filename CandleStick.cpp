@@ -34,6 +34,6 @@ void CandleStick::printCandleStick(std::vector<candleStickEntry> candleSticks)
 
         // stop color text
         std::cout << "\033[0m";
-        std::cout << "==============\n" << std::endl;
+        std::cout << "==============" << std::endl;
     }
 }

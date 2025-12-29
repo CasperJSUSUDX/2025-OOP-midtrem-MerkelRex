@@ -100,60 +100,55 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-std::vector<CandleStickEntry> OrderBook::summaryCandleStick(DateRange dateRange, std::string product, OrderBookType type, unsigned int interval)
+std::vector<candleStickEntry> OrderBook::generateCnadleSticks(std::string startTimestamp, std::string endTimestamp, unsigned int timeInterval)
 {
-    auto convertToDateRange = [&](std::string& timeStamp) -> std::string {
-        switch (dateRange)
-        {
-            case DateRange::YEARLY:
-                return timeStamp.substr(11, 4);
-            case DateRange::MONTHLY:
-                return timeStamp.substr(11, 7);
-            case DateRange::DAILY:
-                return timeStamp.substr(11, 10);
-            default:
-                return timeStamp.substr(11, 4);
-        }
-    };
-
-    std::vector<CandleStickEntry> candleSticks;
+    std::vector<candleStickEntry> candleSticks;
     std::vector<OrderBookEntry> orders_sub;
-    std::string lastTimeStamp = orders[0].timestamp;
+    std::string nextTimestamp = OrderBookEntry::calcNextTimestamp(startTimestamp, timeInterval);
+    
+
     for (OrderBookEntry& obe: orders)
     {
-        if (OrderBook::calcTimeInterval(obe.timestamp, lastTimeStamp) <= interval)
+        std::string timestamp = obe.timestamp.substr(0, 19);
+        if (timestamp < startTimestamp) continue;
+        if (timestamp > endTimestamp) break;
+        if (timestamp > nextTimestamp && timestamp <= endTimestamp) 
         {
-            if (obe.product == product && obe.orderType == type)
-            {
-                orders_sub.push_back(obe);
-            }
-        }
-        else
-        {
-            CandleStickEntry cse{
-                lastTimeStamp,
+            candleStickEntry cse {
+                startTimestamp,
+                nextTimestamp,
                 orders_sub[0].price,
-                getHighPrice(orders_sub),
-                getLowPrice(orders_sub),
-                orders_sub.back().price
+                OrderBook::getHighPrice(orders_sub),
+                OrderBook::getLowPrice(orders_sub),
+                orders_sub[orders_sub.size()-1].price
             };
             candleSticks.push_back(cse);
             orders_sub.clear();
+            startTimestamp = OrderBookEntry::calcNextTimestamp(nextTimestamp, 5);
+            nextTimestamp = OrderBookEntry::calcNextTimestamp(startTimestamp, timeInterval);
+
+            
         }
-        lastTimeStamp = obe.timestamp;
+
+        if (timestamp == startTimestamp)
+        {
+            orders_sub.push_back(obe);
+        }
     }
 
-    if (orders_sub.size() > 0)
+    if (!orders_sub.empty())
     {
-        CandleStickEntry cse{
-                lastTimeStamp,
-                orders_sub[0].price,
-                getHighPrice(orders_sub),
-                getLowPrice(orders_sub),
-                orders_sub.back().price
-            };
+        candleStickEntry cse {
+            startTimestamp,
+            orders_sub[orders_sub.size()-1].timestamp.substr(0, 19),
+            orders_sub[0].price,
+            OrderBook::getHighPrice(orders_sub),
+            OrderBook::getLowPrice(orders_sub),
+            orders_sub[orders_sub.size()-1].price
+        };
         candleSticks.push_back(cse);
     }
+
     return candleSticks;
 }
 

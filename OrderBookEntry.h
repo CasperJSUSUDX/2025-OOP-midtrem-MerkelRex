@@ -26,10 +26,13 @@ class OrderBookEntry
         {
             return e1.price < e2.price;
         }
-         static bool compareByPriceDesc(OrderBookEntry& e1, OrderBookEntry& e2)
+        static bool compareByPriceDesc(OrderBookEntry& e1, OrderBookEntry& e2)
         {
             return e1.price > e2.price;
         }
+        static unsigned int calcIntervalByTimestamp(OrderBookEntry& e1, OrderBookEntry&e2);
+        /** give a timestamp and an interval to calculate the next timestamp after the interval */
+        static std::string calcNextTimestamp(std::string timestamp, unsigned int interval);
 
         double price;
         double amount;
