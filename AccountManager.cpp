@@ -120,7 +120,7 @@ bool AccountManager::createAccount()
         std::cout << "Full name: " << std::flush;
         std::getline(std::cin, username);
 
-        for (auto& data: cache)
+        for (std::pair<const std::string, UserInfo>& data: cache)
         {
             if (data.second.username == username)
             {
@@ -146,9 +146,9 @@ bool AccountManager::createAccount()
         std::cout << "Email: " << std::flush;
         std::cin >> email;
 
-        for (auto& data: cache)
+        for (std::pair<const std::string, UserInfo>& data: cache)
         {
-            if (data.second.username == username)
+            if (data.second.email == email)
             {
                 std::cout << "This email is already been use. Please use other email." <<std::endl;
                 duplicates = true;
