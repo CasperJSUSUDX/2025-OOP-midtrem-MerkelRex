@@ -14,11 +14,6 @@ struct candlestickEntry
     double close;
 };
 
-/** x is from left to right
- *  y is from top to bottom
- */
-using canvas = std::vector<std::string>;
-
 class Candlestick
 {
     public:

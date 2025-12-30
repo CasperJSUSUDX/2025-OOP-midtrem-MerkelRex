@@ -55,8 +55,3 @@ class Wallet
         // Made by myself - end
         std::map<std::string,double> currencies;
 };
-
-
-
-	
-

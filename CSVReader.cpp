@@ -105,4 +105,3 @@ OrderBookEntry CSVReader::stringsToOBE(std::string priceString,
                 
     return obe;
 }
-     
