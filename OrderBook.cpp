@@ -100,7 +100,7 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     orders.push_back(order);
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
-
+// Made by myself - start
 void OrderBook::appendOrder(OrderBookEntry& order)
 {
     orders.push_back(order);
@@ -196,7 +196,7 @@ unsigned int OrderBook::calcTimeInterval(std::string& timeStamp1, std::string& t
 
     return hour + minute + second;
 }
-
+// Made by myself - end
 std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std::string timestamp)
 {
 // asks = orderbook.asks

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <algorithm>
 
+// Made by myself - start
 Wallet::Wallet(std::string _uuid, std::string walletString)
 : uuid(_uuid)
 {
@@ -17,7 +18,7 @@ Wallet::Wallet(std::string _uuid, std::string walletString)
         currencies[currency] = amount;
     }
 }
-
+// Made by myself - end
 void Wallet::insertCurrency(std::string type, double amount)
 {
     double balance;
@@ -35,9 +36,11 @@ void Wallet::insertCurrency(std::string type, double amount)
     balance += amount; 
     currencies[type] = balance;
 
+    // Made by myself - start
     // Add log line in the cache
     std::string logLine = "insert," + type + "," + std::to_string(amount);
     operatesCache.push_back(logLine);
+    // Made by myself - end
 }
 
 bool Wallet::removeCurrency(std::string type, double amount)
@@ -57,8 +60,10 @@ bool Wallet::removeCurrency(std::string type, double amount)
             //std::cout << "Removing " << type << ": " << amount << std::endl;
             currencies[type] -= amount;
             
+            // Made by myself - start
             std::string logLine = "remove," + type + "," + std::to_string(amount);
             operatesCache.push_back(logLine);
+            // Made by myself - end
             return true;
         } 
         else // they have it but not enough.
@@ -82,6 +87,7 @@ void Wallet::processSale(OrderBookEntry& sale)
     std::string outgoingCurrency;
     double incomingAmount;
     std::string incomingCurrency;
+    // Made by myself - start
     // ask
     if (sale.orderType == OrderBookType::asksale)
     {
@@ -105,6 +111,7 @@ void Wallet::processSale(OrderBookEntry& sale)
     // Add log line in the cache
     std::string logLine = "trade," + outgoingCurrency + "," + std::to_string(outgoingAmount) + "," + incomingCurrency + "," + std::to_string(incomingAmount);
     operatesCache.push_back(logLine);
+    // Made by myself - end
 }
 
 bool Wallet::canFulfillOrder(OrderBookEntry order)
@@ -131,7 +138,7 @@ bool Wallet::canFulfillOrder(OrderBookEntry order)
 
     return false; 
 }
-
+// Made by myself - start
 void Wallet::logInCSV()
 {
     std::string filename = uuid + ".csv";
@@ -260,7 +267,7 @@ void Wallet::statisticsUserActivity()
         readFile.close();
     }
 }
-
+// Made by myself - end
 std::string Wallet::toString()
 {
     std::string s;
@@ -277,7 +284,7 @@ std::ostream& operator<<(std::ostream& os,  Wallet& wallet)
     os << wallet.toString();
     return os;
 }
-
+// Made by myself - start
 std::string Wallet::storeInString()
 {
     std::string s;
@@ -291,3 +298,4 @@ std::string Wallet::storeInString()
     s[s.length() - 1] = '\n';
     return s;
 }
+// Made by myself - end

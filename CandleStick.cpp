@@ -1,3 +1,4 @@
+// Made by myself - start
 #include "Candlestick.h"
 #include "CSVReader.h"
 #include <iostream>
@@ -18,7 +19,9 @@ void Candlestick::printCandlestick(std::vector<candlestickEntry> candlesticks)
         // up day
         if (cse.close >= cse.open) 
         {
+            // Made by myself - end
             std::cout << "\033[32m";
+            // Made by myself - start
             std::cout << "High: " << cse.high << std::endl;
             std::cout << "Close: " << cse.close << std::endl;
             std::cout << "Open: " << cse.open << std::endl;
@@ -27,7 +30,9 @@ void Candlestick::printCandlestick(std::vector<candlestickEntry> candlesticks)
         // down day
         if (cse.close < cse.open) 
         {
+            // Made by myself - end
             std::cout << "\033[31m";
+            // Made by myself - start
             std::cout << "High: " << cse.high << std::endl;
             std::cout << "Open: " << cse.open << std::endl;
             std::cout << "Close: " << cse.close << std::endl;
@@ -35,7 +40,10 @@ void Candlestick::printCandlestick(std::vector<candlestickEntry> candlesticks)
         }
 
         // stop color text
+        // Made by myself - end
         std::cout << "\033[0m";
+        // Made by myself - start
         std::cout << "==============" << std::endl;
     }
 }
+// Made by myself - end

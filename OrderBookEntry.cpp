@@ -18,7 +18,7 @@ OrderBookEntry::OrderBookEntry( double _price,
   
     
 }
-
+// Made by myself - start
 unsigned int OrderBookEntry::calcIntervalByTimestamp(OrderBookEntry& e1, OrderBookEntry&e2)
 {
   std::string timestamp1;
@@ -55,20 +55,6 @@ unsigned int OrderBookEntry::calcIntervalByTimestamp(OrderBookEntry& e1, OrderBo
     interval += (hour1 - hour2) * 3600 + (min1 - min2) * 60 + (sec1 - sec2);
   }
 
-  // if (day1 != day2)
-  // {
-  //   std::vector<std::string> tokens1 = CSVReader::tokenise(day1, '/');
-  //   std::vector<std::string> tokens2 = CSVReader::tokenise(day2, '/');
-  //   int day1 = std::stoi(tokens1[2]);
-  //   int day2 = std::stoi(tokens2[2]);
-  //   int month1 = std::stoi(tokens1[1]);
-  //   int month2 = std::stoi(tokens2[1]);
-  //   int year1 = std::stoi(tokens1[0]);
-  //   int year2 = std::stoi(tokens2[0]);
-
-  //   interval += (year1 - year2) * 3600 + (month1 - month2) * 60 + (day1 - day2) * 86400;
-  // }
-
   return interval;
 }
 
@@ -93,6 +79,7 @@ std::string OrderBookEntry::calcNextTimestamp(std::string timestamp, unsigned in
 
   return day + " " + newTime;
 }
+// Made by myself - end
 
 OrderBookType OrderBookEntry::stringToOrderBookType(std::string s)
 {

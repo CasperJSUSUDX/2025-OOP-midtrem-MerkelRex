@@ -29,14 +29,17 @@ class OrderBook
 
         void insertOrder(OrderBookEntry& order);
 
+        // Made by myself - start
         void appendOrder(OrderBookEntry& order);
         void sortOrder();
+        // Made by myself - end
 
         std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
 
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
 
+        // Made by myself - start
         /** generate a vector includes candlestickEntry between two gave timestamp */
         std::vector<candlestickEntry> generateCandlesticks(
             std::string startTimestamp,
@@ -48,6 +51,7 @@ class OrderBook
 
         /** calculate the interval seconds between two time stamp */
         static unsigned int calcTimeInterval(std::string& timeStamp1, std::string& timeStamp2);
+        // Made by myself - end
 
     private:
         std::vector<OrderBookEntry> orders;

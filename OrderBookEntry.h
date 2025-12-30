@@ -30,9 +30,11 @@ class OrderBookEntry
         {
             return e1.price > e2.price;
         }
+        // Made by myself - start
         static unsigned int calcIntervalByTimestamp(OrderBookEntry& e1, OrderBookEntry&e2);
         /** give a timestamp and an interval to calculate the next timestamp after the interval */
         static std::string calcNextTimestamp(std::string timestamp, unsigned int interval);
+        // Made by myself - end
 
         double price;
         double amount;

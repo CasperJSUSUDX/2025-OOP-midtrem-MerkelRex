@@ -19,11 +19,14 @@ class MerkelMain
         void printMarketStats();
         void enterAsk();
         void enterBid();
+        // Made by myself - start
         void simulateTrade();
         void jumpToWallet();
         void jumpToCandlestick();
+        // Made by myself - end
         void gotoNextTimeframe();
         void exitApp();
+        // Made by myself - start
         // wallet menu funcitons
         void dopsiteToWallet();
         void withdrawFromWallet();
@@ -43,6 +46,7 @@ class MerkelMain
         void switchCandlestickStartTimestamp();
         void switchCandlestickInterval();
         void exitDrawingPage();
+        // Made by myself - end
         // process input functions
         int getUserOption();
         void processUserOption(int userOption);
@@ -55,8 +59,11 @@ class MerkelMain
         bool debug = false;
 
         // menu variables
+        // Made by myself - start
         unsigned int indexOfMenus = 0;
+        // Made by myself - end
         using voidFunc = void (MerkelMain::*)();
+        // Made by myself - start
         std::vector<std::vector<std::pair<std::string, voidFunc>>> menus = {
             // main menu
             {
@@ -89,6 +96,7 @@ class MerkelMain
                 {"Exit", exitDrawingPage}
             }
         };
+        // Made by myself - end
 
         // OrderBook orderBook{"20200317.csv"};
 	    OrderBook orderBook{"20200601.csv"};

@@ -29,14 +29,17 @@ void MerkelMain::init()
         cleanConsole();
         processUserOption(input);
 
+        // Made by myself - start
         if (exitFlag) break;
 
         std::cout << "" << std::endl;
+        // Made by myself - end
     }
 }
 
 void MerkelMain::printMenu()
 {
+    // Made by myself - start
     // print menu based on the menu vector
     unsigned int index = 1;
     for (std::pair<std::string, voidFunc>& pair: menus[indexOfMenus])
@@ -44,6 +47,7 @@ void MerkelMain::printMenu()
         std::cout << std::to_string(index) << ": " << pair.first << std::endl;
         ++index;
     }
+    // Made by myself - end
 
     std::cout << "============== " << std::endl;
 
@@ -138,6 +142,7 @@ void MerkelMain::enterBid()
         }   
     }
 }
+// Made by myself - start
 void MerkelMain::simulateTrade()
 {
     std::cout << "Simulating trade..." << std::endl;
@@ -267,6 +272,7 @@ void MerkelMain::jumpToCandlestick()
     printCandlestick();
     indexOfMenus = 2;
 }
+// Made by myself - end
 void MerkelMain::gotoNextTimeframe()
 {
     std::cout << "Going to next time frame. " << std::endl;
@@ -296,7 +302,7 @@ void MerkelMain::exitApp()
     wallet.updateUserWalletCSV();
     exitFlag = true;
 }
-
+// Made by myself - start
 // Wallet menu
 void MerkelMain::dopsiteToWallet()
 {
@@ -452,7 +458,7 @@ void MerkelMain::printCandlestick()
             typeString = "Bid";
             break;
         default:
-            typeString = "Unknow";
+            typeString = "Unknown";
             break;
     }
     std::cout << "Product: " << candlestickProduct + ", Order type: " << typeString << std::endl;
@@ -586,7 +592,7 @@ void MerkelMain::exitDrawingPage()
     std::cout << "Back to main menu." << std::endl;
     indexOfMenus = 0;
 }
-
+// Made by myself - end
 int MerkelMain::getUserOption()
 {
     int userOption = 0;
@@ -628,6 +634,7 @@ std::string MerkelMain::getCurrentSystemTimestamp()
 {
     std::time_t t = std::time(0);
     std::tm* now = std::localtime(&t);
+    // Made by myself - start
     std::string timestamp = std::to_string(now->tm_year + 1900) + '/' +
                             std::to_string(now->tm_mon + 1) + '/' +
                             std::to_string(now->tm_mday) + ' ';
@@ -642,4 +649,5 @@ std::string MerkelMain::getCurrentSystemTimestamp()
     timestamp += hour + ':' + min + ':' + sec;
 
     return timestamp;
+    // Made by myself - end
 }

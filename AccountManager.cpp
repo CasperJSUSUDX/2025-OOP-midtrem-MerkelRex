@@ -1,3 +1,4 @@
+// Made by myself - start
 #include "AccountManager.h"
 #include "CSVReader.h"
 #include <iostream>
@@ -312,3 +313,4 @@ std::string AccountManager::generateUUID(int length)
 std::map<std::string, UserInfo> AccountManager::cache;
 std::set<std::string> AccountManager::existUUID;
 std::hash<std::string> AccountManager::hasher;
+// Made by myself - end

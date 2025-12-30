@@ -1,3 +1,4 @@
+// Made by myself - start
 #pragma once
 
 #include <string>
@@ -31,3 +32,4 @@ class Candlestick
         double low;
         double close;
 };
+// Made by myself - end

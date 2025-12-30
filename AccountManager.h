@@ -1,3 +1,4 @@
+// Made by myself - start
 #pragma once
 
 #include "Wallet.h"
@@ -29,3 +30,4 @@ class AccountManager
         static std::set<std::string> existUUID;
         static std::hash<std::string> hasher;
 };
+// Made by myself - end
