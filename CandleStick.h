@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-struct candleStickEntry
+struct candlestickEntry
 {
     std::string startTimestamp;
     std::string endTimestamp;
@@ -18,12 +18,12 @@ struct candleStickEntry
  */
 using canvas = std::vector<std::string>;
 
-class CandleStick
+class Candlestick
 {
     public:
-        CandleStick();
+        Candlestick();
         /** print out a list of candle stick information by the input vector */
-        static void printCandleStick(std::vector<candleStickEntry> candleSticks);
+        static void printCandlestick(std::vector<candlestickEntry> candlesticks);
 
         std::string date;
         double open;

@@ -110,15 +110,15 @@ void OrderBook::sortOrder()
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
+std::vector<candlestickEntry> OrderBook::generateCnadleSticks(
     std::string startTimestamp,
     std::string endTimestamp,
     unsigned int timeInterval,
     std::string product,
-    OrderBookType candleStickType
+    OrderBookType candlestickType
 )
 {
-    std::vector<candleStickEntry> candleSticks;
+    std::vector<candlestickEntry> candlesticks;
     std::vector<OrderBookEntry> orders_sub;
     std::string nextTimestamp = OrderBookEntry::calcNextTimestamp(startTimestamp, timeInterval);
 
@@ -127,7 +127,7 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
         std::string timestamp = obe.timestamp.substr(0, 19);
         // filter
         if (obe.product != product) continue;
-        if (obe.orderType != candleStickType) continue;
+        if (obe.orderType != candlestickType) continue;
         if (timestamp < startTimestamp) continue;
         if (timestamp > endTimestamp) break;
 
@@ -136,7 +136,7 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
         {
             if (!orders_sub.empty())
             {
-                candleStickEntry cse {
+                candlestickEntry cse {
                     startTimestamp,
                     nextTimestamp,
                     orders_sub[0].price,
@@ -144,7 +144,7 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
                     OrderBook::getLowPrice(orders_sub),
                     orders_sub.back().price
                 };
-                candleSticks.push_back(cse);
+                candlesticks.push_back(cse);
                 orders_sub.clear();
             }
 
@@ -164,7 +164,7 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
     // process remain obes
     if (!orders_sub.empty())
     {
-        candleStickEntry cse {
+        candlestickEntry cse {
             startTimestamp,
             orders_sub[orders_sub.size()-1].timestamp.substr(0, 19),
             orders_sub[0].price,
@@ -172,10 +172,10 @@ std::vector<candleStickEntry> OrderBook::generateCnadleSticks(
             OrderBook::getLowPrice(orders_sub),
             orders_sub[orders_sub.size()-1].price
         };
-        candleSticks.push_back(cse);
+        candlesticks.push_back(cse);
     }
 
-    return candleSticks;
+    return candlesticks;
 }
 
 unsigned int OrderBook::calcTimeInterval(std::string& timeStamp1, std::string& timeStamp2)

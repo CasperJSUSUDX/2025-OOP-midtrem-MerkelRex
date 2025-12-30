@@ -21,7 +21,7 @@ class MerkelMain
         void enterBid();
         void simulateTrade();
         void jumpToWallet();
-        void jumpToCandleStick();
+        void jumpToCandlestick();
         void gotoNextTimeframe();
         void exitApp();
         // wallet menu funcitons
@@ -33,15 +33,15 @@ class MerkelMain
         void updateUserCSV();
         void exitWalletPage();
         // drawing menu functions
-        std::string candleStickProduct = "ETH/BTC";
-        std::string candleStickStartTimestamp;
-        OrderBookType candleStickType = OrderBookType::ask;
-        unsigned int candleStickInterval = 5;
-        void printCandleStick();
-        void switchCandleStickProduct();
-        void switchCandleStickType();
-        void switchCandleStickStartTimestamp();
-        void switchCandleStickInterval();
+        std::string candlestickProduct = "ETH/BTC";
+        std::string candlestickStartTimestamp;
+        OrderBookType candlestickType = OrderBookType::ask;
+        unsigned int candlestickInterval = 5;
+        void printCandlestick();
+        void switchCandlestickProduct();
+        void switchCandlestickType();
+        void switchCandlestickStartTimestamp();
+        void switchCandlestickInterval();
         void exitDrawingPage();
         // process input functions
         int getUserOption();
@@ -65,7 +65,7 @@ class MerkelMain
                 {"Make a bid", enterBid},
                 {"Simulate trades", simulateTrade},
                 {"Check wallet", jumpToWallet},
-                {"Show candle stick", jumpToCandleStick},
+                {"Show candle stick", jumpToCandlestick},
                 {"Continue", gotoNextTimeframe},
                 {"Exit", exitApp}
             },
@@ -81,10 +81,10 @@ class MerkelMain
             },
             // drawing menu
             {
-                {"Switch candle stick product", switchCandleStickProduct},
-                {"Switch candle stick type", switchCandleStickType},
-                {"Switch candle stick start timestamp", switchCandleStickStartTimestamp},
-                {"Switch candle stick interval", switchCandleStickInterval},
+                {"Switch candle stick product", switchCandlestickProduct},
+                {"Switch candle stick type", switchCandlestickType},
+                {"Switch candle stick start timestamp", switchCandlestickStartTimestamp},
+                {"Switch candle stick interval", switchCandlestickInterval},
                 {"Exit", exitDrawingPage}
             }
         };

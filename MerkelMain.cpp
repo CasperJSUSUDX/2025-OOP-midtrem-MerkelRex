@@ -2,7 +2,7 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 #include "AccountManager.h"
-#include "CandleStick.h"
+#include "Candlestick.h"
 #include <ctime>
 #include <iostream>
 #include <random>
@@ -18,7 +18,7 @@ void MerkelMain::init()
 {
     int input;
     currentTime = orderBook.getEarliestTime();
-    candleStickStartTimestamp = currentTime.substr(0, 19);
+    candlestickStartTimestamp = currentTime.substr(0, 19);
     getCurrentSystemTimestamp();
 
     while(true)
@@ -243,10 +243,10 @@ void MerkelMain::jumpToWallet()
     std::cout << "Switch to wallet menu." << std::endl;
     indexOfMenus = 1;
 }
-void MerkelMain::jumpToCandleStick()
+void MerkelMain::jumpToCandlestick()
 {
     std::cout << "Switch to candle stick page.\n" << std::endl;
-    printCandleStick();
+    printCandlestick();
     indexOfMenus = 2;
 }
 void MerkelMain::gotoNextTimeframe()
@@ -404,18 +404,18 @@ void MerkelMain::exitWalletPage()
 }
 
 // Candle stick menu
-void MerkelMain::printCandleStick()
+void MerkelMain::printCandlestick()
 {
-    std::vector<candleStickEntry> candleSticks = orderBook.generateCnadleSticks(
-        candleStickStartTimestamp,
+    std::vector<candlestickEntry> candlesticks = orderBook.generateCnadleSticks(
+        candlestickStartTimestamp,
         currentTime.substr(0, 19),
-        candleStickInterval,
-        candleStickProduct,
-        candleStickType
+        candlestickInterval,
+        candlestickProduct,
+        candlestickType
     );
 
     std::string typeString;
-    switch (candleStickType)
+    switch (candlestickType)
     {
         case OrderBookType::ask:
             typeString = "Ask";
@@ -427,13 +427,13 @@ void MerkelMain::printCandleStick()
             typeString = "Unknow";
             break;
     }
-    std::cout << "Product: " << candleStickProduct + ", Order type: " << typeString << std::endl;
+    std::cout << "Product: " << candlestickProduct + ", Order type: " << typeString << std::endl;
     std::cout << "==============" << std::endl;
 
-    // generate a candleStick vector by orderbook
-    CandleStick::printCandleStick(candleSticks);
+    // generate a candlestick vector by orderbook
+    Candlestick::printCandlestick(candlesticks);
 }
-void MerkelMain::switchCandleStickProduct()
+void MerkelMain::switchCandlestickProduct()
 {
     std::string product;
     std::cout << "Enter product. (ETH/BTC)" << std::endl;
@@ -447,9 +447,9 @@ void MerkelMain::switchCandleStickProduct()
         {
             if (p == product) 
             {
-                candleStickProduct = product;
+                candlestickProduct = product;
                 std::cout << "Change successfully. Current product is: " << product << "\n" << std::endl;
-                printCandleStick();
+                printCandlestick();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 return;
             }
@@ -458,7 +458,7 @@ void MerkelMain::switchCandleStickProduct()
         std::cout << "Bad input. Please try again." << std::endl;
     }
 }
-void MerkelMain::switchCandleStickType()
+void MerkelMain::switchCandlestickType()
 {
     std::string type;
     OrderBookType obType;
@@ -482,12 +482,12 @@ void MerkelMain::switchCandleStickType()
         std::cout << "Bad input. Please try again. (Format: YYYY/MM/DD HH:MM:SS)" << std::endl;
     }
 
-    candleStickType = obType;
+    candlestickType = obType;
     std::cout << "Change successfuly. Current type is: " << type << "\n" << std::endl;
-    printCandleStick();
+    printCandlestick();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
-void MerkelMain::switchCandleStickStartTimestamp()
+void MerkelMain::switchCandlestickStartTimestamp()
 {
     std::string timestamp;
     std::cout << "Enter a timestamp to set it as the start timestamp of the candle stick. (Format: YYYY/MM/DD HH:MM:SS)" << std::endl;
@@ -521,16 +521,16 @@ void MerkelMain::switchCandleStickStartTimestamp()
         std::cout << "Bad input. Please try again. (Format: YYYY/MM/DD HH:MM:SS)" << std::endl;
     }
 
-    candleStickStartTimestamp = timestamp;
+    candlestickStartTimestamp = timestamp;
     std::cout << "Change successfuly. Current start timestamp is: " << timestamp << "\n" << std::endl;
-    printCandleStick();
+    printCandlestick();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
-void MerkelMain::switchCandleStickInterval()
+void MerkelMain::switchCandlestickInterval()
 {
     std::string input;
     int num;
-    std::cout << "Enter a new timestamp interval of the candleStick. (Will floor to multiples of five)" << std::endl;
+    std::cout << "Enter a new timestamp interval of the candlestick. (Will floor to multiples of five)" << std::endl;
     while (true)
     {
         std::cin >> input;
@@ -548,9 +548,9 @@ void MerkelMain::switchCandleStickInterval()
         std::cout << "Please enter a positive integer." << std::endl;
     }
 
-    candleStickInterval = num - (num % 5);
-    std::cout << "Change successfuly. Current interval is: " << candleStickInterval << "\n" << std::endl;
-    printCandleStick();
+    candlestickInterval = num - (num % 5);
+    std::cout << "Change successfuly. Current interval is: " << candlestickInterval << "\n" << std::endl;
+    printCandlestick();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 void MerkelMain::exitDrawingPage()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OrderBookEntry.h"
-#include "CandleStick.h"
+#include "candlestick.h"
 #include "CSVReader.h"
 #include <random>
 #include <string>
@@ -37,13 +37,13 @@ class OrderBook
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
 
-        /** generate a vector includes candleStickEntry between two gave timestamp */
-        std::vector<candleStickEntry> generateCnadleSticks(
+        /** generate a vector includes candlestickEntry between two gave timestamp */
+        std::vector<candlestickEntry> generateCnadleSticks(
             std::string startTimestamp,
             std::string endTimestamp,
             unsigned int timeInterval,
             std::string product,
-            OrderBookType candleStickType
+            OrderBookType candlestickType
         );
 
         /** calculate the interval seconds between two time stamp */

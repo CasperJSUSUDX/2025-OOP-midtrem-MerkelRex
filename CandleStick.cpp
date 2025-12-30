@@ -1,17 +1,17 @@
-#include "CandleStick.h"
+#include "Candlestick.h"
 #include "CSVReader.h"
 #include <iostream>
 #include <vector>
 
-CandleStick::CandleStick()
+Candlestick::Candlestick()
 {
 }
 
-void CandleStick::printCandleStick(std::vector<candleStickEntry> candleSticks)
+void Candlestick::printCandlestick(std::vector<candlestickEntry> candlesticks)
 {   
-    if (candleSticks.empty()) return;
+    if (candlesticks.empty()) return;
 
-    for (candleStickEntry& cse: candleSticks)
+    for (candlestickEntry& cse: candlesticks)
     {
         std::cout << cse.startTimestamp << " --> " << cse.endTimestamp << "\n" << std::endl;
 
